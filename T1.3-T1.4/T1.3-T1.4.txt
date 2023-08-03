@@ -1,0 +1,3 @@
+1. Create visual studio project and named it T1.3-T1.4. Connect all .h and .cpp files into project.
+2. Process TQ1.h and TTestQ1.cpp
+3. Process TQ2.h and TTestQ2.cpp

@@ -1,0 +1,16 @@
+REFLECTABLE(struct)Cringe{}
+
+REFLECTABLE(class)TObject{}
+
+REFLECTABLE(struct)TObject{}
+
+struct TObject {
+    FUNCTION(public, static)
+	void Call();
+	
+	FUNCTION(protected, virtual)
+	void Ball();
+	
+	FUNCTION(public, static)
+	int Ball();
+};

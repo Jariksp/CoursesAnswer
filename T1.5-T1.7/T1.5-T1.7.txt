@@ -1,0 +1,14 @@
+1. Write Base and Derived empty classes. Create shared pointer Derived type with make function,
+and put it to shared pointer Base type. Shared obtained pointer to one more. Nullify first pointer.
+
+2. Generate probability distribution, which sum should be equal to 1. Result should be placed to
+std::vector with float type. Result must provide TDistributionGenerator class.
+
+3. Program code should create seven objects with three difference polymorphic types.
+Each object should be created as smart pointer and written to std::map by name. All objects should have
+base parent with virtual function Name(), which return string. Derived class have to override
+function with specify implementation.
+
+4. Generalize all written types (in 1-3 tasks) to common. Coomon object type should has virtual function
+named ToString. Override for specify type better implementation. Wrapp and put as smart pointer all objects
+to std::array with size, equals 10. Using iterators, loop by array and print ToString data to std::cout stream.

@@ -1,0 +1,9 @@
+﻿  main.cpp
+  TDebug.cpp
+  TQ1.cpp
+  TTestQ1.cpp
+  TTestQ2.cpp
+  TXTest.cpp
+  Generating Code...
+D:\StarniGames\branches\Yarik\CoursesTesting\T1.3-T1.4\T1.3-T1.4\TQ1.cpp(19): warning C4715: 'TQ1::CheckNull': not all control paths return a value
+  T1.3-T1.4.vcxproj -> D:\StarniGames\branches\Yarik\CoursesTesting\T1.3-T1.4\x64\Debug\T1.3-T1.4.exe

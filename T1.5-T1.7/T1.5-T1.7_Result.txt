@@ -1,0 +1,7 @@
+1. +1
+2. +0.75 - ToString should return string inner represent of generated distribution
+3. +0.75 - Use Name() function instead "Object1", "Object2", ...
+4. +1
+
+---
+TOTAL: 4.5/5
