@@ -1,0 +1,8 @@
+1. Create struct TSaveInfo, which take date info with specify format: dd:mm:yyyy. Use char* for holding info (as saving object). Create TSaveManager, which consists of TSaveInfo objects.
+
+2. Select better implementation for TSaveManager API, where user can forward/extract saving data (using TSaveInfo) into TSaveManager, get container data, sort and map it by specify algorithm (using std::function as algorithm object).
+
+3. Create several saves using TSaveManager. Sort holding objects by months, with descent order. Map holding objects by odd days.
+
+---
+During code writing use base (generic) lambda, std::string, shared_ptr and etc.

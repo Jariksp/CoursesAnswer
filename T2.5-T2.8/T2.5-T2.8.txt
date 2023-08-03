@@ -1,0 +1,4 @@
+Create engine for game "Rock Paper Scissors" using stl algorithms, container, function and etc.
+Hardcore: dont use if/switch..case and ternary and for/while/do..while and goto statements.
+
+Time limit: 3 hours.

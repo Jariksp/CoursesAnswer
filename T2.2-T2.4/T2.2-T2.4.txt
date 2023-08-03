@@ -1,0 +1,119 @@
+Using from following design patterns: Singleton, Strategy, Adapter, Factory - implement own code
+generation system, which can process file line by line, and rewrite/insert/remove code.
+
+Usage: Some code in TObject.h:
+---------------------------------------------------------------------------------------------------
+REFLECTABLE(Struct)
+struct TObject {
+    FUNCTION(Public, Virtual)
+    void Call();
+
+    PROPERTY(Protected, Serializable)
+    int m_iVar;
+};
+---------------------------------------------------------------------------------------------------
+
+Can be replace to (in the same file TObject.h):
+---------------------------------------------------------------------------------------------------
+struct TObject;
+template <>
+static void Reflactable<TObject>();
+
+struct TObject {
+    public:
+    static inline TReflectionFunction<&TObject::Call, void> Public_Virtual_TObject_void_Call;
+    static inline TReflectionProterty<&TObject::m_iVar, int> Protected_Serializable_TObject_int_m_iVar;
+
+    public:
+    virtual void Call();
+
+    protected:
+    int m_iVar;
+};
+---------------------------------------------------------------------------------------------------
+
+And generate some TObject.reflection.cpp:
+---------------------------------------------------------------------------------------------------
+template <>
+static void Reflactable<TObject>() {
+    TObject::Public_Virtual_TObject_void_Call = {
+        "void TObject::Call()",
+        TReflectionCore::AccessModifier::Public,    
+        TReflectionFunction::Type::Virtual
+    };
+    TObject::Protected_Serializable_TObject_int_m_iVar = {
+        "int TObject::m_iVar",
+        TReflectionCore::AccessModifier::Protected,
+        TReflectionCore::Serializable
+    };
+}
+---------------------------------------------------------------------------------------------------
+
+Some useful function for string processing:
+---------------------------------------------------------------------------------------------------
+#include <cstddef> // size_t
+
+#include <fstream> // ifstream, istreambuf_iterator, ios
+#include <string> // string
+#include <vector> // vector
+
+// Split("ab::cd::ef", "::") => {"ab", "cd", "ef"}
+// Split("Hello, World!", "XYZ") => {"Hello, World!"}
+static std::vector<std::string> Split(const std::string& str, const std::string& delimiter) {
+    std::size_t start = 0;
+    std::size_t end = 0;
+
+    std::string token;
+    std::vector<std::string> result;
+
+    while( (end = str.find(delimiter, start))!=std::string::npos ) {
+        token = str.substr(start, end-start);
+        start = end+delimiter.length();
+        result.push_back(token);
+    }
+
+    result.push_back( str.substr(start) );
+    return result;
+}
+
+// ReplaceAll("ab::cd::ef", "::", "->") => "ab->cd->ef"
+static void ReplaceAll(std::string& text, const std::string& from, const std::string& to) {
+   if( from.empty() ) return;
+    
+    std::size_t position = 0;
+    while( (position = text.find(from, position))!=std::string::npos ) {
+        text.replace( position, from.length(), to );
+        position += to.length();
+    }
+}
+
+// SubStrsBetween("dummy_;data: %value_; 10% with %percent_;%", "%", "_;") => {"value", "percent"}
+// SubStrsBetween("auto f = [](){};", "}", "[") => {}
+// SubStrsBetween("A(B(C))D", "(", ")") => {} - since sub strs works based on split function, u can provide own impl
+static std::vector<std::string> SubStrsBetween(const std::string& text, const std::string& lhs, const std::string& rhs) {
+    static unsigned s_uSplitSize = 2;
+
+    std::vector<std::string> result;
+
+    auto externToks = Split(text, lhs);
+    if( externToks.size()>=s_uSplitSize ) externToks.erase( externToks.begin() );
+
+    for(auto& externTok:externToks) {
+        auto innerToks = Split(externTok, rhs);
+        if( innerToks.size()==s_uSplitSize ) result.push_back( innerToks.front() );
+    }
+
+    return result;
+}
+
+// ReadFile("C://main.cpp") => "int main() {\n\treturn 0;\n}\n"
+static std::string ReadFile(const std::string& path) {
+    std::ifstream file(path, std::ios::in | std::ios::binary);
+    if( !file.is_open() ) return {};
+
+    std::string content( std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>{} );
+    file.close();
+
+    return content;
+}
+---------------------------------------------------------------------------------------------------
